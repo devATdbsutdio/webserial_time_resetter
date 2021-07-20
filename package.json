@@ -1,0 +1,14 @@
+{
+  "name": "timeresetter",
+  "version": "1.0.0",
+  "description": "webapp for setting time on watch via serial",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Saurabh Datta",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

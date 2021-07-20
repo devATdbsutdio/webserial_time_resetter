@@ -1,0 +1,93 @@
+body {
+    padding: 0;
+    margin: 0;
+    background: #c4c4c4;
+    overflow-x: hidden;
+    overflow-y: hidden
+}
+
+@font-face {
+    font-family: "NeusaNextPro-Light";
+    src: url("/assets/fonts/NeusaNextPro-Light.ttf") format("truetype");
+}
+
+
+.clockWrapper {
+    position: fixed;
+    top: 35%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.time {
+    display: block;
+    text-align: center;
+}
+
+.oneliner {
+    display: inline;
+    /* margin-left: 10px; */
+    /* margin-right: 10px; */
+    text-align: right;
+    position: relative;
+    left: 18%;
+}
+
+.ss {
+    font-family: "NeusaNextPro-Light";
+    margin-left: 25px;
+    color: #a0a0a0;
+}
+
+.hm {
+    font-family: "NeusaNextPro-Light";
+    font-size: 72px;
+    color: #373737;
+}
+
+.date {
+    font-family: "NeusaNextPro-Light";
+    font-size: 22px;
+    color: #8493b7;
+}
+
+.buttonGroup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.button {
+    background-color: #8f8f8f;
+    display: inline-block;
+    margin: 10px;
+    border-radius: 2.5px;
+    width: 50px;
+    height: 45px;
+}
+
+.button:hover {
+    background-color: #90a7a3;
+}
+
+.button:active {
+    background-color: #b8b8b8;
+}
+
+i {
+    position: relative;
+    top: 6px;
+    color: #242424;
+}
+
+.serial i {
+    left: 12px;
+}
+
+.sync i {
+    transform: scale(0.8, 0.8);
+    left: 9.25px;
+}

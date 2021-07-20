@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- <iframe allowpaymentrequest allow="usb; fullscreen"></iframe> -->
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+    <title>Serial Time Resetter</title>
+    <script>
+      // Redirect to HTTPS if HTTP is requested.
+      if (window.location.protocol === "http:") {
+        window.location.href = "https:" + window.location.href.substring(5);
+      }
+    </script>
+
+    <link rel="stylesheet" href="assets/fontawesome/css/fontawesome.min.css"/>
+    <link rel="stylesheet" href="assets/fontawesome/css/solid.min.css"/>
+    <!-- OR -->
+    <!-- <script src="https://kit.fontawesome.com/1140b10109.js" crossorigin="anonymous"></script> -->
+    <script language="javascript" type="text/javascript" src="src/attribution.js"></script>
+
+    <link rel="stylesheet" href="styles/style.css"> 
+
+    <script language="javascript" type="text/javascript" src="src/vars.js"></script>
+  </head>
+
+  <body>
+    <div class="clockWrapper">
+      <div class="time oneliner hm"></div>
+      <div class="oneliner ss">ss</div>
+      <div class="time date"></div>
+    </div>
+    <div class="buttonGroup">
+      <div class="button serial">
+        <i class="fas fa-plug fa-2x fa-rotate-270" id="serialPlug"></i>
+      </div>  
+      <div class="button sync">
+        <i class="fas fa-sync fa-2x"></i>
+      </div>
+    </div>    
+
+    <script language="javascript" type="text/javascript" src="src/clock.js"></script>
+    <script language="javascript" type="text/javascript" src="src/serialManager.js"></script>
+  </body>
+
+</html>
