@@ -7,7 +7,8 @@ var HOST = process.env.HOST || '';
 
 const app = express()
 
-app.use(express.static('public'))
+// app.use(express.static('public'))
+app.use(express.static('docs'))
 
 var options = {
     key  : fs.readFileSync('ssl/key.pem'),
