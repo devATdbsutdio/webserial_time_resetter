@@ -4,24 +4,16 @@ const syncbtn = document.querySelector('.sync')
 // document.addEventListener("DOMContentLoaded", () => {
 //     syncElems = document.querySelectorAll('.sync');
 //     if(serialConnected === false || !navigator.serial){
-//         // -- Disable sync
-//         for (let el of syncElems) { el.disabled = true; }
 //     }
 // });
 
 serialbtn.addEventListener("click", async () => {
     if(serialConnected === false){
         if (navigator.serial) {
-            console.log('Web Serial API Supported 🤗 ---');
-            // filterVID = defaultVID;
-            // console.log("var VID:", filterVID);
-            // console.log("def const VID:", defaultVID);
-            // console.log("def custom VID:", customVID);
+            console.log('Web Serial API Supported 🤗');
             connectSerial();
         } else {
             console.log('Web Serial API not supported ! 🧐');
-            // -- Disable sync
-            // for (let el of syncElems) { el.disabled = true; }
         }
     }else{
         if (outputStream) {
@@ -39,8 +31,6 @@ serialbtn.addEventListener("click", async () => {
             // -- Reset button colors. 
             serialbtn.style.backgroundColor = '#8f8f8f';
             document.getElementById('serialPlug').style.color= '#242424';
-            // -- Disable sync
-            // for (let el of syncElems) { el.disabled = true; }
         }
     }
 });
@@ -50,6 +40,8 @@ serialbtn.addEventListener("click", async () => {
 async function connectSerial() {
     // -- Filter on devices with the VID
     filterVID = defaultVID;
+    // filterVID = customVID; // check the vars.js
+
     // console.log("VID:", filterVID);
     const filter = { usbVendorId: filterVID };
 
@@ -64,8 +56,6 @@ async function connectSerial() {
              // -- Reflect button colors to show serial is connected.  
             serialbtn.style.backgroundColor = '#8abbb3';
             document.getElementById('serialPlug').style.color= '#355953';
-            // -- Enable sync
-            // for (let el of syncElems) { el.disabled = false; }
 
             // -- Setup the output stream here.
             const encoder = new TextEncoderStream();
