@@ -4,8 +4,6 @@ const syncbtn = document.querySelector('.sync')
 // document.addEventListener("DOMContentLoaded", () => {
 //     syncElems = document.querySelectorAll('.sync');
 //     if(serialConnected === false || !navigator.serial){
-//         // -- Disable sync
-//         for (let el of syncElems) { el.disabled = true; }
 //     }
 // });
 
@@ -16,8 +14,6 @@ serialbtn.addEventListener("click", async () => {
             connectSerial();
         } else {
             console.log('Web Serial API not supported ! 🧐');
-            // -- Disable sync
-            // for (let el of syncElems) { el.disabled = true; }
         }
     }else{
         if (outputStream) {
@@ -35,8 +31,6 @@ serialbtn.addEventListener("click", async () => {
             // -- Reset button colors. 
             serialbtn.style.backgroundColor = '#8f8f8f';
             document.getElementById('serialPlug').style.color= '#242424';
-            // -- Disable sync
-            // for (let el of syncElems) { el.disabled = true; }
         }
     }
 });
@@ -45,7 +39,11 @@ serialbtn.addEventListener("click", async () => {
 
 async function connectSerial() {
     // -- Filter on devices with the VID
-    const filter = { usbVendorId:  0x0403 };
+    filterVID = defaultVID;
+    // filterVID = customVID; // check the vars.js
+
+    // console.log("VID:", filterVID);
+    const filter = { usbVendorId: filterVID };
 
     try {
         port = await navigator.serial.requestPort({ filters: [filter]});
@@ -55,11 +53,9 @@ async function connectSerial() {
             await port.open({ baudRate: 115200 });
             serialConnected = true;
             console.log("Serial connected 👍🏽");
-             // -- Reflect button colors to show serial is connected.  
+             // -- Reflect button colors to show serial is connected.  
             serialbtn.style.backgroundColor = '#8abbb3';
             document.getElementById('serialPlug').style.color= '#355953';
-            // -- Enable sync
-            // for (let el of syncElems) { el.disabled = false; }
 
             // -- Setup the output stream here.
             const encoder = new TextEncoderStream();
