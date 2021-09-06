@@ -12,7 +12,11 @@ const syncbtn = document.querySelector('.sync')
 serialbtn.addEventListener("click", async () => {
     if(serialConnected === false){
         if (navigator.serial) {
-            console.log('Web Serial API Supported 🤗');
+            console.log('Web Serial API Supported 🤗 ---');
+            // filterVID = defaultVID;
+            // console.log("var VID:", filterVID);
+            // console.log("def const VID:", defaultVID);
+            // console.log("def custom VID:", customVID);
             connectSerial();
         } else {
             console.log('Web Serial API not supported ! 🧐');
@@ -44,12 +48,23 @@ serialbtn.addEventListener("click", async () => {
 
 
 async function connectSerial() {
-    // -- Filter on devices with the VID 
-    // const filter = { usbVendorId:  0x0403 }; // def FTDI VID
-    const filter = { usbVendorId: 0x2BD3 }; // custom set VID 
+    // -- Filter on devices with the VID
+    filterVID = defaultVID;
+    // console.log("VID:", filterVID);
+    const filter = { usbVendorId: filterVID };
 
     try {
+        port = await navigator.serial.requestPort({ filters: [filter]});
 
+        try {
+            // -- Wait for the serial port to open.
+            await port.open({ baudRate: 115200 });
+            serialConnected = true;
+            console.log("Serial connected 👍🏽");
+             // -- Reflect button colors to show serial is connected.  
+            serialbtn.style.backgroundColor = '#8abbb3';
+            document.getElementById('serialPlug').style.color= '#355953';
+            // -- Enable sync
             // for (let el of syncElems) { el.disabled = false; }
 
             // -- Setup the output stream here.
