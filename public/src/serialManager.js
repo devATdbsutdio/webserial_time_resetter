@@ -39,8 +39,8 @@ serialbtn.addEventListener("click", async () => {
 
 async function connectSerial() {
     // -- Filter on devices with the VID
-    // filterVID = defaultVID;
-    filterVID = customVID; // check the vars.js
+    filterVID = defaultVID;
+    // filterVID = customVID; // check the vars.js
 
     // console.log("VID:", filterVID);
     const filter = { usbVendorId: filterVID };
