@@ -44,21 +44,12 @@ serialbtn.addEventListener("click", async () => {
 
 
 async function connectSerial() {
-    // -- Filter on devices with the VID
-    const filter = { usbVendorId:  0x0403 };
+    // -- Filter on devices with the VID 
+    // const filter = { usbVendorId:  0x0403 }; // def FTDI VID
+    const filter = { usbVendorId: 0x2BD3 }; // custom set VID 
 
     try {
-        port = await navigator.serial.requestPort({ filters: [filter]});
 
-        try {
-            // -- Wait for the serial port to open.
-            await port.open({ baudRate: 115200 });
-            serialConnected = true;
-            console.log("Serial connected 👍🏽");
-             // -- Reflect button colors to show serial is connected.  
-            serialbtn.style.backgroundColor = '#8abbb3';
-            document.getElementById('serialPlug').style.color= '#355953';
-            // -- Enable sync
             // for (let el of syncElems) { el.disabled = false; }
 
             // -- Setup the output stream here.
