@@ -10,6 +10,7 @@ const syncbtn = document.querySelector('.sync')
 serialbtn.addEventListener("click", async () => {
     if(serialConnected === false){
         if (navigator.serial) {
+            console.log('[SERIAL BUTTON PRESSED] Checking Web Serial Support...');
             console.log('Web Serial API Supported 🤗');
             connectSerial();
         } else {
@@ -26,6 +27,7 @@ serialbtn.addEventListener("click", async () => {
         if(port){
             await port.close();
             port = null;
+            console.log('[SERIAL BUTTON PRESSED] Disconnecting Serial...');
             console.log("Serial disconnected ❌");
             serialConnected = false;
             // -- Reset button colors. 
@@ -40,20 +42,26 @@ serialbtn.addEventListener("click", async () => {
 async function connectSerial() {
     // -- Filter on devices with the VID
     filterVID = defaultVID;
-    // filterVID = customVID; // check the vars.js
+    // filterVID = customVID; // check the vars.jsa
 
     // console.log("VID:", filterVID);
     const filter = { usbVendorId: filterVID };
 
     try {
-        port = await navigator.serial.requestPort({ filters: [filter]});
+        // port = await navigator.serial.requestPort({ filters: [filter]});
+        port = await navigator.serial.requestPort();
 
         try {
+            // -- Print the current port info (#debug   )
+            console.log("\ncurr port info:\n");
+            console.log(port.getInfo());
+            console.log("\n");
+
             // -- Wait for the serial port to open.
             await port.open({ baudRate: 115200 });
             serialConnected = true;
             console.log("Serial connected 👍🏽");
-             // -- Reflect button colors to show serial is connected.  
+            // -- Reflect button colors to show serial is connected.  
             serialbtn.style.backgroundColor = '#8abbb3';
             document.getElementById('serialPlug').style.color= '#355953';
 
