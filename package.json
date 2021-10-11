@@ -9,6 +9,7 @@
   "author": "Saurabh Datta",
   "license": "ISC",
   "dependencies": {
+    "core-util-is": "^1.0.3",
     "express": "^4.17.1"
   }
 }
