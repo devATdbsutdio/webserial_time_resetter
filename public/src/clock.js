@@ -2,10 +2,11 @@ const zeroPad = (num, places) => String(num).padStart(places, '0');
 
 document.addEventListener("DOMContentLoaded", () => {
     setInterval( () => { 
-        const now = new Date;
+        var now = new Date();
+        var month = now.getMonth()+1; // month starts from 0
 
-        currDate = zeroPad(now.getDay(), 2);
-        currMonth = zeroPad(now.getMonth(), 2);
+        currDate = zeroPad(now.getDate(), 2);
+        currMonth = zeroPad(month, 2);
         currYear = now.getFullYear();
         currWeekday = now.getDay();
 
