@@ -2,6 +2,9 @@ let headerFont;
 let footerFont;
 let mainClockFont;
 
+
+const show_serial_data_on_frontend = true;
+
 //--------- DATE & TIME RELATED ----------//
 let currDate;
 let currMonth;
@@ -32,3 +35,5 @@ let outputDone;
 let outputStream;
 let serialConnected = false;
 let syncElems;
+
+var serialTimeData;

@@ -83,13 +83,25 @@ async function connectSerial() {
 syncbtn.addEventListener("click", () => {
     // -- Get the time
     const now = new Date;
-    const serialTimeData = now.getHours()+":"+
-                           now.getMinutes()+":"+
-                           now.getSeconds()+":"+
-                           now.getDay()+":"+
-                           now.getDate()+":"+
-                           now.getMonth()+":"+
-                           now.getFullYear();
+    
+    // let delay_in_ms = 5;
+
+    var delay_selection = document.getElementById("delays");
+    var delay_in_ms = delay_selection.value;
+
+    // const serialTimeData
+
+    serialTimeData = now.getHours()+":"+
+                        now.getMinutes()+":"+
+                        now.getSeconds()+":"+
+                        now.getDay()+":"+
+                        now.getDate()+":"+
+                        now.getMonth()+":"+
+                        now.getFullYear()+":"+
+                        delay_in_ms;
+
+    console.log(serialTimeData);
+
     // -- write the Serial Data
     if(port !=null){
         writeToStream(serialTimeData);
