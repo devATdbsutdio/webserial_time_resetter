@@ -2,7 +2,7 @@
 
 ### prerequisite for testing locally:
 **Generate ssl keys:**
-```console
+```shell
 mkdir ssl
 cd ssl
 openssl genrsa -out server.key 2048
