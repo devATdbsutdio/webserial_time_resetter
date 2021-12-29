@@ -10,10 +10,10 @@ const app = express()
 app.use(express.static('public'))
 
 var options = {
-    key  : fs.readFileSync('ssl/key.pem'),
-    ca   : fs.readFileSync('ssl/csr.pem'),
-    cert : fs.readFileSync('ssl/cert.pem')
+    key  : fs.readFileSync('ssl/server.key'),
+    cert : fs.readFileSync('ssl/server.cert')
 }
+
 
 console.log("Firing up server: 🔥");
 

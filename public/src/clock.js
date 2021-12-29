@@ -36,12 +36,20 @@ document.addEventListener("DOMContentLoaded", () => {
                                 now.getDay()+":"+
                                 now.getDate()+":"+
                                 now.getMonth()+":"+
-                                now.getFullYear()+":"+
-                                delay_in_ms;
+                                now.getFullYear()
+
+            // const FE_serialTimeData = now.getHours()+":"+
+            //         now.getMinutes()+":"+
+            //         now.getSeconds()+":"+
+            //         now.getDay()+":"+
+            //         now.getDate()+":"+
+            //         now.getMonth()+":"+
+            //         now.getFullYear()+":"+
+            //         delay_in_ms;
 
             // console.log(FE_serialTimeData);
-            ds = document.getElementById('data_structure');
-            ds.innerHTML = FE_serialTimeData;
+            // ds = document.getElementById('data_structure');
+            // ds.innerHTML = FE_serialTimeData;
         }
 
     }, 1000);

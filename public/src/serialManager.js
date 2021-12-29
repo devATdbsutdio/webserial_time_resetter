@@ -85,9 +85,8 @@ syncbtn.addEventListener("click", () => {
     const now = new Date;
     
     // let delay_in_ms = 5;
-
-    var delay_selection = document.getElementById("delays");
-    var delay_in_ms = delay_selection.value;
+    // var delay_selection = document.getElementById("delays");
+    // var delay_in_ms = delay_selection.value;
 
     // const serialTimeData
 
@@ -97,14 +96,24 @@ syncbtn.addEventListener("click", () => {
                         now.getDay()+":"+
                         now.getDate()+":"+
                         now.getMonth()+":"+
-                        now.getFullYear()+":"+
-                        delay_in_ms;
+                        now.getFullYear()
+
+    // serialTimeData = now.getHours()+":"+
+    //                     now.getMinutes()+":"+
+    //                     now.getSeconds()+":"+
+    //                     now.getDay()+":"+
+    //                     now.getDate()+":"+
+    //                     now.getMonth()+":"+
+    //                     now.getFullYear()+":"+
+    //                     delay_in_ms;
 
     console.log(serialTimeData);
 
     // -- write the Serial Data
     if(port !=null){
         writeToStream(serialTimeData);
+    }else{
+        console.log("Not writing to Serial Port as it wasn't created/selected!");
     }
 });
 
