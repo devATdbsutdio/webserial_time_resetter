@@ -30,26 +30,26 @@ document.addEventListener("DOMContentLoaded", () => {
             const now = new Date;
             var delay_selection = document.getElementById("delays");
             var delay_in_ms = delay_selection.value;
-            const FE_serialTimeData = now.getHours()+":"+
-                                now.getMinutes()+":"+
-                                now.getSeconds()+":"+
-                                now.getDay()+":"+
-                                now.getDate()+":"+
-                                now.getMonth()+":"+
-                                now.getFullYear()
-
             // const FE_serialTimeData = now.getHours()+":"+
-            //         now.getMinutes()+":"+
-            //         now.getSeconds()+":"+
-            //         now.getDay()+":"+
-            //         now.getDate()+":"+
-            //         now.getMonth()+":"+
-            //         now.getFullYear()+":"+
-            //         delay_in_ms;
+            //                     now.getMinutes()+":"+
+            //                     now.getSeconds()+":"+
+            //                     now.getDay()+":"+
+            //                     now.getDate()+":"+
+            //                     now.getMonth()+":"+
+            //                     now.getFullYear()
+
+            const FE_serialTimeData = now.getHours()+":"+
+                    now.getMinutes()+":"+
+                    now.getSeconds()+":"+
+                    now.getDay()+":"+
+                    now.getDate()+":"+
+                    now.getMonth()+":"+
+                    now.getFullYear()+":"+
+                    delay_in_ms
 
             // console.log(FE_serialTimeData);
-            // ds = document.getElementById('data_structure');
-            // ds.innerHTML = FE_serialTimeData;
+            ds = document.getElementById('data_structure');
+            ds.innerHTML = FE_serialTimeData;
         }
 
     }, 1000);

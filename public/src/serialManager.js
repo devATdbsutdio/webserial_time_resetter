@@ -85,8 +85,8 @@ syncbtn.addEventListener("click", () => {
     const now = new Date;
     
     // let delay_in_ms = 5;
-    // var delay_selection = document.getElementById("delays");
-    // var delay_in_ms = delay_selection.value;
+    var delay_selection = document.getElementById("delays");
+    var delay_in_ms = delay_selection.value;
 
     // const serialTimeData
 
@@ -105,7 +105,8 @@ syncbtn.addEventListener("click", () => {
     //                     now.getDate()+":"+
     //                     now.getMonth()+":"+
     //                     now.getFullYear()+":"+
-    //                     delay_in_ms;
+    //                     delay_in_ms
+                        
 
     console.log(serialTimeData);
 
