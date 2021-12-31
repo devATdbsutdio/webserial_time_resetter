@@ -86,17 +86,7 @@ syncbtn.addEventListener("click", () => {
     
     // let delay_in_ms = 5;
     var delay_selection = document.getElementById("delays");
-    var delay_in_ms = delay_selection.value;
-
-    // const serialTimeData
-
-    serialTimeData = now.getHours()+":"+
-                        now.getMinutes()+":"+
-                        now.getSeconds()+":"+
-                        now.getDay()+":"+
-                        now.getDate()+":"+
-                        now.getMonth()+":"+
-                        now.getFullYear()
+    var delay_in_ms = Number(delay_selection.value);
 
     // serialTimeData = now.getHours()+":"+
     //                     now.getMinutes()+":"+
@@ -104,11 +94,18 @@ syncbtn.addEventListener("click", () => {
     //                     now.getDay()+":"+
     //                     now.getDate()+":"+
     //                     now.getMonth()+":"+
-    //                     now.getFullYear()+":"+
-    //                     delay_in_ms
-                        
+    //                     now.getFullYear()
 
-    console.log(serialTimeData);
+    serialTimeData = now.getHours()+":"+
+                        now.getMinutes()+":"+
+                        now.getSeconds()+":"+
+                        now.getDay()+":"+
+                        now.getDate()+":"+
+                        now.getMonth()+":"+
+                        now.getFullYear()+":"+
+                        delay_in_ms;
+
+    // console.log(serialTimeData);
 
     // -- write the Serial Data
     if(port !=null){
