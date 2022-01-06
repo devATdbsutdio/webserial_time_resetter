@@ -41,7 +41,7 @@ let outputStream;
 let serialConnected = false;
 let syncElems;
 
-var serialTimeData;
+var serialData;
 
 
 

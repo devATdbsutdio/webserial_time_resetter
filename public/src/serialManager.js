@@ -20,7 +20,8 @@ document.addEventListener("DOMContentLoaded", () => {
         webSerialSupported = true;
 
 
-        // -- TODO: Handle Events for physical re-connection of serial port by users
+        // -- Intention: Handle Events for physical re-connection of serial port by users when plug in the same device
+        // -- TBD: how t auto connect/ auto open the SAME serial port (if possible)?
         navigator.serial.addEventListener("connect", (event) => {
             // ... Automatically open event.target or warn user a port is available ??
             reconnectSerial(event);
@@ -97,17 +98,14 @@ async function connectSerial() {
     try {
         // -- Wait for the serial port to open.
         await port.open({ baudRate: baudrate });
-        serialConnected = true;
+
+        if (port.writable && port.readable) serialConnected = true;
+
         console.log("Serial connected 👍🏽");
 
         // -- Reflect button colors to show serial is connected.  
         serialbtn.style.backgroundColor = '#8abbb3';
         document.getElementById('serialPlug').style.color= '#355953';
-
-        // -- Setup the output stream here.
-        // const encoder = new TextEncoderStream();
-        // outputDone = encoder.readable.pipeTo(port.writable);
-        // outputStream = encoder.writable;
     } catch (e) {
         console.log(e);
     }
@@ -127,17 +125,13 @@ async function reconnectSerial(e){
         try {
             // -- Wait for the serial port to re-open.
             await port.open({ baudRate: baudrate});
-            serialConnected = true;
+
+            if (port.writable && port.readable) serialConnected = true;
 
             console.log('[from sys navigator] Serial Port is available again and Reconnected! 👍🏽');
             // -- Reflect button colors to show serial is connected.  
             serialbtn.style.backgroundColor = '#8abbb3';
             document.getElementById('serialPlug').style.color= '#355953';
-
-            // -- Setup the output stream here, Again!
-            // const encoder = new TextEncoderStream();
-            // outputDone = encoder.readable.pipeTo(port.writable);
-            // outputStream = encoder.writable;
         } catch (e) {
             console.log(e);
         }
@@ -150,7 +144,7 @@ async function reconnectSerial(e){
 
 
 
-
+//------- Sync button method: Write the data structure -------//
 syncbtn.addEventListener("click", () => {
     // -- Get the time
     const now = new Date;
@@ -159,7 +153,7 @@ syncbtn.addEventListener("click", () => {
     let delay_in_ms = Number(delay_selection.value);
 
 
-    serialTimeData = now.getHours()+":"+
+    serialData = now.getHours()+":"+
                         now.getMinutes()+":"+
                         now.getSeconds()+":"+
                         now.getDay()+":"+
@@ -170,21 +164,15 @@ syncbtn.addEventListener("click", () => {
                         enableTilt;
 
     // -- write the Serial Data
-    if(port !=null){
-        writeToStream(serialTimeData);
-    }else{
-        console.log("Not writing to Serial Port as it wasn't created/selected!");
-        console.log( serialTimeData);
-    }
+    if (port !=null && port.writable) writeToStream(serialData);
+    else console.log("Not writing to Serial Port as it wasn't created/selected!\n"+serialData);
 });
-
-
 
 
 function writeToStream(...lines) {
     // -- Setup the output stream here.
     const encoder = new TextEncoderStream();
-    if (port && port.writable) outputDone = encoder.readable.pipeTo(port.writable);
+    outputDone = encoder.readable.pipeTo(port.writable);
     outputStream = encoder.writable;
     const writer = outputStream.getWriter();
 

@@ -30,15 +30,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const now = new Date;
             let delay_selection = document.getElementById("delays");
             let delay_in_ms = delay_selection.value;
-            // const FE_serialTimeData = now.getHours()+":"+
-            //                     now.getMinutes()+":"+
-            //                     now.getSeconds()+":"+
-            //                     now.getDay()+":"+
-            //                     now.getDate()+":"+
-            //                     now.getMonth()+":"+
-            //                     now.getFullYear()
 
-            const FE_serialTimeData = now.getHours()+":"+
+            const debugDataStruct = now.getHours()+":"+
                     now.getMinutes()+":"+
                     now.getSeconds()+":"+
                     now.getDay()+":"+
@@ -49,9 +42,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     enableTilt;
 
 
-            // console.log(FE_serialTimeData);
+            // console.log(debugDataStruct);
             ds = document.getElementById('data_structure');
-            ds.innerHTML = FE_serialTimeData;
+            ds.innerHTML = debugDataStruct;
         }
 
     }, 1000);
