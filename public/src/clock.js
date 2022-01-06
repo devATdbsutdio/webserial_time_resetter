@@ -28,8 +28,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (show_serial_data_on_frontend == true){
             // -- Get the time & date ahd otehr data for teh serial data
             const now = new Date;
-            var delay_selection = document.getElementById("delays");
-            var delay_in_ms = delay_selection.value;
+            let delay_selection = document.getElementById("delays");
+            let delay_in_ms = delay_selection.value;
             // const FE_serialTimeData = now.getHours()+":"+
             //                     now.getMinutes()+":"+
             //                     now.getSeconds()+":"+
@@ -45,7 +45,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     now.getDate()+":"+
                     now.getMonth()+":"+
                     now.getFullYear()+":"+
-                    delay_in_ms
+                    delay_in_ms+":"+
+                    enableTilt;
+
 
             // console.log(FE_serialTimeData);
             ds = document.getElementById('data_structure');
