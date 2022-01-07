@@ -63,9 +63,10 @@ document.addEventListener("DOMContentLoaded", () => {
 serialbtn.addEventListener("click", async () => {
     if (webSerialSupported) {
         if(serialConnected === false){
+            // ** Connect/Open Port Method
             connectSerial();
         }else{
-            //  Disconnnect method
+            // ** Disconnnect/Close Port Method
             if (outputStream) {
                 await outputStream.getWriter().close();
                 await outputDone;
@@ -114,21 +115,25 @@ async function connectSerial() {
 
 // -- For Automatically opening port, if it was connected before using "event.target" 
 let counter = 0;
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 async function reconnectSerial(e){
     // TBD: fires twice! "Duct Tape" mitigation strategy here! :|
     counter += 1;
     if(counter <= 1){
         // alert('Device was attached again, please reconnect!');
-        
-        port = e.target || e.port;
 
+        // ** Adding delays to avpid race condition and giving time for browser to actually make the port available
+        await delay(1000);
+        port = await e.port || e.target;
+        await delay(1000);
         try {
             // -- Wait for the serial port to re-open.
             await port.open({ baudRate: baudrate});
-
+            await delay(1000);
             if (port.writable && port.readable) serialConnected = true;
 
-            console.log('[from sys navigator] Serial Port is available again and Reconnected! 👍🏽');
+            console.log('Serial Port is available again and Reconnected! 👍🏽');
             // -- Reflect button colors to show serial is connected.  
             serialbtn.style.backgroundColor = '#8abbb3';
             document.getElementById('serialPlug').style.color= '#355953';
