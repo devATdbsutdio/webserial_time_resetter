@@ -1,58 +1,84 @@
 const serialbtn = document.querySelector('.serial')
 const syncbtn = document.querySelector('.sync')
 
+// -- For checking if the browser that is making the request is from a computer or not
+function isCompBrowser(){
+    const state = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
+    return !state;
+} 
 
 
-// On load, check if browser supports serial
+// On load, check if browser is from a computer, if so check if it supports serial
 document.addEventListener("DOMContentLoaded", () => {
-    console.log('Checking Web Serial Support...');
 
-    if (navigator.serial) {
-        console.log('Web Serial API Supported 🤗');
-
-        // Hide the "Non-chrome" warning Top Banner 
-        document.getElementById('notSupported').style.display = 'none';
-        // Enable "connect to serial" and "sync data" button and any interaction with it.
-        document.querySelector('.buttonGroup').style.pointerEvents = 'auto';
-        document.querySelector('.fa-plug').style.color = '#242424';
-        document.querySelector('.fa-sync').style.color = '#242424';
-
-        webSerialSupported = true;
-
-
-        // -- Intention: Handle Events for physical re-connection of serial port by users when plug in the same device
-        // -- TBD: how t auto connect/ auto open the SAME serial port (if possible)?
-        navigator.serial.addEventListener("connect", (event) => {
-            // ... Automatically open event.target or warn user a port is available ??
-            reconnectSerial(event);
-        });
-
-
-        // -- Handle Events for physical dis-connection of serial port by users
-        navigator.serial.addEventListener("disconnect", (event) => {
-            // ... If the serial port was opened, a stream error would be observed as well, handle if any ??
-            console.log('Serial Port dis-connected physically by user ❌');
-            // -- Reset button colors. 
-            serialbtn.style.backgroundColor = '#8f8f8f';
-            document.getElementById('serialPlug').style.color= '#242424';
-            // -- Update some var's states accordingly 
-            // ** These vars are used later for serial port interaction
-            serialConnected = false;
-            port = null;
-            counter = 0; //
-        });
-    }else{
-        console.log('Web Serial API not supported ! 🧐');
+    if(isCompBrowser()){
+        reqIsFromComputerBrowser = true;
         
-        // Show the "Non-chrome" warning Top Banner 
-        document.getElementById('notSupported').style.display = 'inline-block';
+        console.log('Request was made from a computer browser!');
+        console.log('So checking Web Serial Support...');
+
+        // Hide "not from computer" banner warning.
+        document.getElementById('notComputer').style.display = 'none';
+
+        if (navigator.serial) {
+            console.log('Web Serial API Supported 🤗');
+
+            // Hide the "Non-chrome" warning Top Banner 
+            document.getElementById('notSupported').style.display = 'none';
+            // Enable "connect to serial" and "sync data" button and any interaction with it.
+            document.querySelector('.buttonGroup').style.pointerEvents = 'auto';
+            document.querySelector('.fa-plug').style.color = '#242424';
+            document.querySelector('.fa-sync').style.color = '#242424';
+
+            webSerialSupported = true;
+
+
+            // -- Intention: Handle Events for physical re-connection of serial port by users when plug in the same device
+            // -- TBD: how t auto connect/ auto open the SAME serial port (if possible)?
+            navigator.serial.addEventListener("connect", (event) => {
+                // ... Automatically open event.target or warn user a port is available ??
+                reconnectSerial(event);
+            });
+
+
+            // -- Handle Events for physical dis-connection of serial port by users
+            navigator.serial.addEventListener("disconnect", (event) => {
+                // ... If the serial port was opened, a stream error would be observed as well, handle if any ??
+                console.log('Serial Port dis-connected physically by user ❌');
+                // -- Reset button colors. 
+                serialbtn.style.backgroundColor = '#8f8f8f';
+                document.getElementById('serialPlug').style.color= '#242424';
+                // -- Update some var's states accordingly 
+                // ** These vars are used later for serial port interaction
+                serialConnected = false;
+                port = null;
+                counter = 0; //
+            });
+        }else{
+            console.log('Web Serial API not supported ! 🧐');
+            
+            // Show the "Non-chrome" warning Top Banner 
+            document.getElementById('notSupported').style.display = 'inline-block';
+            // Disable "connect to serial" button and any interaction with it.
+            document.querySelector('.buttonGroup').style.pointerEvents = 'none';
+            document.querySelector('.fa-plug').style.color = '#545454';
+            document.querySelector('.fa-sync').style.color = '#545454';
+
+            webSerialSupported = false;
+        }
+    }else{
+        reqIsFromComputerBrowser = false;
+
+        console.log('Request was made from a mobile browser!🧐');
+        console.log('Please go to a chrome browser (> chrome 89) from a computer and try again.');
+
+        // Show "not from computer" banner warning.
+        document.getElementById('notComputer').style.display = 'inline-block';
 
         // Disable "connect to serial" button and any interaction with it.
         document.querySelector('.buttonGroup').style.pointerEvents = 'none';
         document.querySelector('.fa-plug').style.color = '#545454';
         document.querySelector('.fa-sync').style.color = '#545454';
-
-        webSerialSupported = false;
     }
 });
 
@@ -61,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // --- click: attemmpt to connect to serial port
 // --- click, again: disconnect. 
 serialbtn.addEventListener("click", async () => {
-    if (webSerialSupported) {
+    if (reqIsFromComputerBrowser && webSerialSupported) {
         if(serialConnected === false){
             // ** Connect/Open Port Method
             connectSerial();

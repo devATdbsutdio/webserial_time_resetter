@@ -3,8 +3,7 @@ let footerFont;
 let mainClockFont;
 
 
-let webSerialSupported = false;
-
+let reqIsFromComputerBrowser = false;
 const show_serial_data_on_frontend = true;
 
 //--------- DATE & TIME RELATED ----------//
@@ -28,6 +27,8 @@ let delay_in_ms = 4;
 let enableTilt = 0;
 
 //--------- SERIAL PORT RELATED ----------//
+let webSerialSupported = false;
+
 let port;
 
 const defaultVID = 0x0403;

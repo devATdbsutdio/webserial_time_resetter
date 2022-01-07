@@ -22,6 +22,16 @@ body {
   color: #373737;
 }
 
+#notComputer{
+  padding: 1em;
+  background-color: palevioletred;
+  color: white;
+  /*margin-top: 1em;*/
+  margin-bottom: 1em;
+  font-family: "NeusaNextPro-Light";
+  color: #373737;
+}
+
 
 .clockWrapper {
     position: fixed;
