@@ -1,6 +1,12 @@
 const serialbtn = document.querySelector('.serial')
 const syncbtn = document.querySelector('.sync')
 
+
+// let disconnectedByClick = false;
+// let disconnectedByAccident = false;
+
+
+
 // -- For checking if the browser that is making the request is from a computer or not
 function isCompBrowser(){
     const state = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
@@ -33,26 +39,42 @@ document.addEventListener("DOMContentLoaded", () => {
             webSerialSupported = true;
 
 
-            // -- Intention: Handle Events for physical re-connection of serial port by users when plug in the same device
-            // -- TBD: how t auto connect/ auto open the SAME serial port (if possible)?
+            // -- Handle Events for physical re-connection of serial port by users when plug in the same device
             navigator.serial.addEventListener("connect", (event) => {
-                // ... Automatically open event.target or warn user a port is available ??
-                reconnectSerial(event);
+                if(disconnectedByAccident && !wasClickedToDisconnect){ // TODO: retreive var state from session cache
+                    reconnectSerial(event);
+                }
             });
 
 
-            // -- Handle Events for physical dis-connection of serial port by users
+            // -- Handle Events for physical dis-connection of serial port by users by accident
             navigator.serial.addEventListener("disconnect", (event) => {
-                // ... If the serial port was opened, a stream error would be observed as well, handle if any ??
-                console.log('Serial Port dis-connected physically by user ❌');
-                // -- Reset button colors. 
-                serialbtn.style.backgroundColor = '#8f8f8f';
-                document.getElementById('serialPlug').style.color= '#242424';
-                // -- Update some var's states accordingly 
-                // ** These vars are used later for serial port interaction
-                serialConnected = false;
-                port = null;
-                counter = 0; //
+                // TBD: fires twice! "Duct Tape" mitigation strategy here! :|
+                disconnectCounter += 1;
+                if(disconnectCounter <= 1){
+                    console.log('Serial Port was phhysically removed by by user ❌');
+                    // -- Reset button colors. 
+                    serialbtn.style.backgroundColor = '#8f8f8f';
+                    document.getElementById('serialPlug').style.color= '#242424';
+                    // -- Update some var's states accordingly 
+                    // ** These vars are used later for serial port interaction
+                    serialConnected = false;
+
+                    // TODO: remove port pointer 
+                    port = null;
+                    event.port = null;
+                    event.target = null;
+
+                    // Stream related objects
+                    // TODO: handle errors of pysical disconnection for output stream annd output done...
+                    outputStream = null;
+                    outputDone = null;
+                    
+                    connectCounter = 0; 
+                    disconnectedByAccident = true; // TODO: save this in session cache
+                }else{
+                    disconnectCounter = 0;
+                }
             });
         }else{
             console.log('Web Serial API not supported ! 🧐');
@@ -102,16 +124,18 @@ serialbtn.addEventListener("click", async () => {
             if (port){
                 await port.close();
                 port = null;
+                serialConnected = false;
+                wasClickedToDisconnect = true;
+
                 console.log('[SERIAL BUTTON PRESSED] Disconnecting Serial...');
                 console.log("Serial disconnected ❌");
-                serialConnected = false;
                 // -- Reset button colors. 
                 serialbtn.style.backgroundColor = '#8f8f8f';
                 document.getElementById('serialPlug').style.color= '#242424';
             }
         }
     }
-    counter = 0;
+    connectCounter = 0;
 });
 
 
@@ -126,50 +150,64 @@ async function connectSerial() {
         // -- Wait for the serial port to open.
         await port.open({ baudRate: baudrate });
 
-        if (port.writable && port.readable) serialConnected = true;
-
-        console.log("Serial connected 👍🏽");
-
-        // -- Reflect button colors to show serial is connected.  
-        serialbtn.style.backgroundColor = '#8abbb3';
-        document.getElementById('serialPlug').style.color= '#355953';
+        if (port.writable && port.readable){
+            serialConnected = true;
+            wasClickedToDisconnect = false;
+            disconnectedByAccident = false;
+            console.log("Serial connected 👍🏽");
+            // -- Reflect button colors to show serial is connected.  
+            serialbtn.style.backgroundColor = '#8abbb3';
+            document.getElementById('serialPlug').style.color= '#355953';
+        }  
     } catch (e) {
         console.log(e);
     }
 }
 
 
-// -- For Automatically opening port, if it was connected before using "event.target" 
-let counter = 0;
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+// -- For Automatically opening port, if it was connected before using "event.target" 
+// const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 async function reconnectSerial(e){
     // TBD: fires twice! "Duct Tape" mitigation strategy here! :|
-    counter += 1;
-    if(counter <= 1){
+    connectCounter += 1;
+    if(connectCounter <= 1){
         // alert('Device was attached again, please reconnect!');
 
-        // ** Adding delays to avpid race condition and giving time for browser to actually make the port available
-        await delay(1000);
+        // ** Adding delays to avoid race condition and giving time for browser to actually make the port available
+        // await delay(1000);
         port = await e.port || e.target;
-        await delay(1000);
+        // await delay(1000);
+
         try {
             // -- Wait for the serial port to re-open.
-            await port.open({ baudRate: baudrate});
-            await delay(1000);
-            if (port.writable && port.readable) serialConnected = true;
+            let tryReconnecting = true;
+            while (tryReconnecting){
+                try{
+                    await port.open({ baudRate: baudrate});
+                    if (port) {
+                        tryReconnecting = false;
+                    }
+                } catch(err){
+                    // console.log('Error occured while attempting to re-open port:\n-> ', err);
+                }
+            }
 
-            console.log('Serial Port is available again and Reconnected! 👍🏽');
-            // -- Reflect button colors to show serial is connected.  
-            serialbtn.style.backgroundColor = '#8abbb3';
-            document.getElementById('serialPlug').style.color= '#355953';
+            if (port.writable && port.readable){
+                serialConnected = true;
+                wasClickedToDisconnect = false;
+                disconnectedByAccident = false;
+                console.log('Serial Port is available again and Reconnected! 👍🏽');
+                // -- Reflect button colors to show serial is connected.  
+                serialbtn.style.backgroundColor = '#8abbb3';
+                document.getElementById('serialPlug').style.color= '#355953';
+            }  
         } catch (e) {
             console.log(e);
         }
     }else{
-        counter = 0;
+        connectCounter = 0;
     }
-    
 }
 
 
