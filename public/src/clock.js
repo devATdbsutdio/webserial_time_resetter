@@ -38,8 +38,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     now.getDate()+":"+
                     now.getMonth()+":"+
                     now.getFullYear()+":"+
-                    delay_in_ms+":"+
-                    enableTilt;
+                    delay_in_ms;
+                    // enableTilt;
 
 
             // console.log(debugDataStruct);

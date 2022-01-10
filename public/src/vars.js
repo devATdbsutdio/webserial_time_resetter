@@ -24,7 +24,7 @@ let weekdays = [
 	"SATURDAY"
 ]
 let delay_in_ms = 4;
-let enableTilt = 0;
+// let enableTilt = 0;
 
 //--------- SERIAL PORT RELATED ----------//
 let webSerialSupported = false;

@@ -2,11 +2,6 @@ const serialbtn = document.querySelector('.serial')
 const syncbtn = document.querySelector('.sync')
 
 
-// let disconnectedByClick = false;
-// let disconnectedByAccident = false;
-
-
-
 // -- For checking if the browser that is making the request is from a computer or not
 function isCompBrowser(){
     const state = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
@@ -132,7 +127,7 @@ serialbtn.addEventListener("click", async () => {
                 // -- Reset button colors. 
                 serialbtn.style.backgroundColor = '#8f8f8f';
                 document.getElementById('serialPlug').style.color= '#242424';
-            }
+            }   
         }
     }
     connectCounter = 0;
@@ -229,8 +224,8 @@ syncbtn.addEventListener("click", () => {
                         now.getDate()+":"+
                         now.getMonth()+":"+
                         now.getFullYear()+":"+
-                        delay_in_ms+":"+
-                        enableTilt;
+                        delay_in_ms;
+                        // enableTilt;
 
     // -- write the Serial Data
     if (port !=null && port.writable) writeToStream(serialData);
@@ -256,10 +251,10 @@ function writeToStream(...lines) {
 
 
 //------- tilt enable disable stuff for frontend -------//
-const enableTiltSwSelector = document.getElementById('tilt_sw');
-let state = false;
-enableTiltSwSelector.addEventListener("click", () => {
-    state = !state;
-    if (state) enableTilt = 1;
-    else enableTilt = 0;
-});
+// const enableTiltSwSelector = document.getElementById('tilt_sw');
+// let state = false;
+// enableTiltSwSelector.addEventListener("click", () => {
+//     state = !state;
+//     if (state) enableTilt = 1;
+//     else enableTilt = 0;
+// });
