@@ -133,6 +133,7 @@ i {
 }
 
 .sync i {
+    /*display: block;*/
     transform: scale(0.8, 0.8);
     left: 9.25px;
 }

@@ -1,5 +1,6 @@
-const serialbtn = document.querySelector('.serial')
-const syncbtn = document.querySelector('.sync')
+const serialbtn = document.querySelector('.serial');
+const syncbtn = document.querySelector('.sync');
+const spinicon =  document.querySelector('.fa-sync');
 
 //-- [Await based delay function] Returns a Promise that resolves after "ms"
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -222,8 +223,9 @@ const writeDateAndTimeData = async _ => {
     // -- Reflect button colors to show locked.  
     syncbtn.style.backgroundColor = '#90a7a3';
     syncbtn.style.pointerEvents = 'none';
-    // -- TBD: Spin the icon
-    
+    // -- Spin the icon
+    spinicon.classList.add('fa-spin');
+
 
     for (let i = 1; i < maxWrites+1; i++) {
             //UI related info
@@ -259,7 +261,8 @@ const writeDateAndTimeData = async _ => {
     // -- Reflect button colors to show un-locked.  
     syncbtn.style.backgroundColor = '#8f8f8f';
     syncbtn.style.pointerEvents = 'auto';
-    // -- TBD: Stop Spin the icon
+    // -- Stop Spin the icon
+    spinicon.classList.remove('fa-spin');
 }
 
 
