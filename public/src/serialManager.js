@@ -1,6 +1,9 @@
 const serialbtn = document.querySelector('.serial')
 const syncbtn = document.querySelector('.sync')
 
+//-- [Await based delay function] Returns a Promise that resolves after "ms"
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 
 // -- For checking if the browser that is making the request is from a computer or not
 function isCompBrowser(){
@@ -162,7 +165,6 @@ async function connectSerial() {
 
 
 // -- For Automatically opening port, if it was connected before using "event.target" 
-// const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 async function reconnectSerial(e){
     // TBD: fires twice! "Duct Tape" mitigation strategy here! :|
     connectCounter += 1;
@@ -210,27 +212,47 @@ async function reconnectSerial(e){
 
 //------- Sync button method: Write the data structure -------//
 syncbtn.addEventListener("click", () => {
-    // -- Get the time
-    const now = new Date;
-    
-    let delay_selection = document.getElementById("delays");
-    let delay_in_ms = Number(delay_selection.value);
-
-
-    serialData = now.getHours()+":"+
-                        now.getMinutes()+":"+
-                        now.getSeconds()+":"+
-                        now.getDay()+":"+
-                        now.getDate()+":"+
-                        now.getMonth()+":"+
-                        now.getFullYear()+":"+
-                        delay_in_ms;
-                        // enableTilt;
-
-    // -- write the Serial Data
-    if (port !=null && port.writable) writeToStream(serialData);
-    else console.log("Not writing to Serial Port as it wasn't created/selected!\n"+serialData);
+    writeDateAndTimeData();
 });
+
+// -- Write the data for some time ...
+const writeDateAndTimeData = async _ => {
+    // TBD: Lock the button
+    console.log('\nlock\n\n');
+
+    for (let i = 1; i < maxWrites+1; i++) {
+            //UI related info
+            currWriteCount = (maxWrites)-i;
+            console.log(currWriteCount + " sec left");
+            // TBD: Show the countdown near the button.
+
+            // -- Get the time
+            const now = new Date;
+
+            let delay_selection = document.getElementById("delays");
+            let delay_in_ms = Number(delay_selection.value);
+
+            serialData = now.getHours()+":"+
+                                now.getMinutes()+":"+
+                                now.getSeconds()+":"+
+                                now.getDay()+":"+
+                                now.getDate()+":"+
+                                now.getMonth()+":"+
+                                now.getFullYear()+":"+
+                                delay_in_ms;
+                                // enableTilt;
+
+            // -- write the Serial Data
+            if (port !=null && port.writable) writeToStream(serialData);
+            else console.log("Not writing to Serial Port as it wasn't created/selected!\n"+serialData);
+
+            await delay(writeFrequency);
+        }
+
+    // TBD: unlock the button
+    console.log('\nun-lock\n');
+}
+
 
 
 function writeToStream(...lines) {

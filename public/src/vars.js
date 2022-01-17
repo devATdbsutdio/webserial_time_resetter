@@ -49,6 +49,14 @@ let syncElems;
 
 var serialData;
 
+/* 
+	Variables defining at what frequency data needs to be writtent to serial port and for how long
+	e.g: write data 10 times at a frequency of 1 sec between writes.  
+*/
+let maxWrites = 7;
+let writeFrequency = 1000; // in ms
+let currWriteCount = 0;
+
 
 
 //--------- OS finger printing to alrt use to install FTDI VCP drivers respective to their OS -----------//
