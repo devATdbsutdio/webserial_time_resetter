@@ -217,8 +217,13 @@ syncbtn.addEventListener("click", () => {
 
 // -- Write the data for some time ...
 const writeDateAndTimeData = async _ => {
-    // TBD: Lock the button
+    // Lock the button
     console.log('\nlock\n\n');
+    // -- Reflect button colors to show locked.  
+    syncbtn.style.backgroundColor = '#90a7a3';
+    syncbtn.style.pointerEvents = 'none';
+    // -- TBD: Spin the icon
+    
 
     for (let i = 1; i < maxWrites+1; i++) {
             //UI related info
@@ -249,8 +254,12 @@ const writeDateAndTimeData = async _ => {
             await delay(writeFrequency);
         }
 
-    // TBD: unlock the button
+    // unlock the button
     console.log('\nun-lock\n');
+    // -- Reflect button colors to show un-locked.  
+    syncbtn.style.backgroundColor = '#8f8f8f';
+    syncbtn.style.pointerEvents = 'auto';
+    // -- TBD: Stop Spin the icon
 }
 
 
