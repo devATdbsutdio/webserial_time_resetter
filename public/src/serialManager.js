@@ -1,6 +1,7 @@
 const serialbtn = document.querySelector('.serial');
 const syncbtn = document.querySelector('.sync');
 const spinicon =  document.querySelector('.fa-sync');
+var whileSyncingPrompt = document.getElementById('syncingPrompt');
 
 //-- [Await based delay function] Returns a Promise that resolves after "ms"
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -225,14 +226,16 @@ const writeDateAndTimeData = async _ => {
     syncbtn.style.pointerEvents = 'none';
     // -- Spin the icon
     spinicon.classList.add('fa-spin');
+    // -- Bring up the "press button on watch to sync" prompt for user 
+    whileSyncingPrompt.style.display = "block";
 
 
     for (let i = 1; i < maxWrites+1; i++) {
             //UI related info
             currWriteCount = (maxWrites)-i;
             console.log(currWriteCount + " sec left");
-            // TBD: Show the countdown near the button.
-            // ...
+            // Show the countdown remaining for user to sync time, near the button.
+            whileSyncingPrompt.innerHTML = '[' + currWriteCount + ' sec left] Press button on watch to sync!'
 
             // -- Get the time
             const now = new Date;
@@ -261,6 +264,8 @@ const writeDateAndTimeData = async _ => {
     console.log('\nun-lock\n');
     // TBD: Remove the countdown from near the button.
     // ...
+    whileSyncingPrompt.style.display = "none";
+
     // -- Reflect button colors to show un-locked.  
     syncbtn.style.backgroundColor = '#8f8f8f';
     syncbtn.style.pointerEvents = 'auto';

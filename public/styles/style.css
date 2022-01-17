@@ -137,3 +137,16 @@ i {
     transform: scale(0.8, 0.8);
     left: 9.25px;
 }
+
+#syncingPrompt{
+    font-family: "NeusaNextPro-Light";
+    font-size:18px;
+    color: #373737;
+
+    position: fixed;
+    text-align: left;
+    top: 50%;
+    left:52.6%;
+    -webkit-transform: translate(10%, -60%);
+    transform: translate(10%, -60%);
+}
