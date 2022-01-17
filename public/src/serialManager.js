@@ -223,8 +223,12 @@ const writeDateAndTimeData = async _ => {
     // -- Reflect button colors to show locked.  
     syncbtn.style.backgroundColor = '#90a7a3';
     syncbtn.style.pointerEvents = 'none';
-    // -- Spin the icon
+    // -- TBD: Spin the icon
     spinicon.classList.add('fa-spin');
+    // spinicon.classList.add('fa-x');
+    
+    // transform: scale(0.8, 0.8);
+    // left: 9.25px;
 
 
     for (let i = 1; i < maxWrites+1; i++) {
@@ -261,7 +265,7 @@ const writeDateAndTimeData = async _ => {
     // -- Reflect button colors to show un-locked.  
     syncbtn.style.backgroundColor = '#8f8f8f';
     syncbtn.style.pointerEvents = 'auto';
-    // -- Stop Spin the icon
+    // -- TBD: Stop Spin the icon
     spinicon.classList.remove('fa-spin');
 }
 
