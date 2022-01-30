@@ -39,12 +39,12 @@ document.addEventListener("DOMContentLoaded", () => {
             webSerialSupported = true;
 
 
-            // -- Handle Events for physical re-connection of serial port by users when plug in the same device
-            navigator.serial.addEventListener("connect", (event) => {
-                if(disconnectedByAccident && !wasClickedToDisconnect){ // TODO: retreive var state from session cache
-                    reconnectSerial(event);
-                }
-            });
+            // -- [TODO] Handle Events for physical re-connection of serial port by users when plug in the same device
+            // navigator.serial.addEventListener("connect", (event) => {
+            //     if(disconnectedByAccident && !wasClickedToDisconnect){ // TODO: retreive var state from session cache
+            //         reconnectSerial(event);
+            //     }
+            // });
 
 
             // -- Handle Events for physical dis-connection of serial port by users by accident
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // TBD: fires twice! "Duct Tape" mitigation strategy here! :|
                 disconnectCounter += 1;
                 if(disconnectCounter <= 1){
-                    console.log('Serial Port was phhysically removed by by user ❌');
+                    console.log('Serial Port was physically removed by by user ❌');
                     // -- Reset button colors. 
                     serialbtn.style.backgroundColor = '#8f8f8f';
                     document.getElementById('serialPlug').style.color= '#242424';
@@ -90,6 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }else{
         reqIsFromComputerBrowser = false;
+        webSerialSupported = false;
 
         console.log('Request was made from a mobile browser!🧐');
         console.log('Please go to a chrome browser (> chrome 89) from a computer and try again.');
@@ -151,6 +152,11 @@ async function connectSerial() {
         await port.open({ baudRate: baudrate });
 
         if (port.writable && port.readable){
+            // -- Setup the output stream here.
+            const encoder = new TextEncoderStream();
+            outputDone = encoder.readable.pipeTo(port.writable);
+            outputStream = encoder.writable;
+
             serialConnected = true;
             wasClickedToDisconnect = false;
             disconnectedByAccident = false;
@@ -188,7 +194,7 @@ async function reconnectSerial(e){
                         tryReconnecting = false;
                     }
                 } catch(err){
-                    // console.log('Error occured while attempting to re-open port:\n-> ', err);
+                    console.log('Error occured while attempting to re-open port:\n-> ', err);
                 }
             }
 
@@ -216,6 +222,8 @@ async function reconnectSerial(e){
 syncbtn.addEventListener("click", () => {
     writeDateAndTimeData();
 });
+
+
 
 // -- Write the data for some time ...
 const writeDateAndTimeData = async _ => {
@@ -277,9 +285,10 @@ const writeDateAndTimeData = async _ => {
 
 function writeToStream(...lines) {
     // -- Setup the output stream here.
-    const encoder = new TextEncoderStream();
-    outputDone = encoder.readable.pipeTo(port.writable);
-    outputStream = encoder.writable;
+    // const encoder = new TextEncoderStream();
+    // outputDone = encoder.readable.pipeTo(port.writable);
+    // outputStream = encoder.writable;
+
     const writer = outputStream.getWriter();
 
     lines.forEach(line => {

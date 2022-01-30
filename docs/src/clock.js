@@ -2,10 +2,11 @@ const zeroPad = (num, places) => String(num).padStart(places, '0');
 
 document.addEventListener("DOMContentLoaded", () => {
     setInterval( () => { 
-        const now = new Date;
+        var now = new Date();
+        var month = now.getMonth()+1; // month starts from 0
 
-        currDate = zeroPad(now.getDay(), 2);
-        currMonth = zeroPad(now.getMonth(), 2);
+        currDate = zeroPad(now.getDate(), 2);
+        currMonth = zeroPad(month, 2);
         currYear = now.getFullYear();
         currWeekday = now.getDay();
 
@@ -21,6 +22,31 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelector('.hm').innerText = hm;
         document.querySelector('.ss').innerText = ss;
         document.querySelector('.date').innerText = date;
+
+
+        // -- for showing Serial data structure on the front end
+        if (show_serial_data_on_frontend == true){
+            // -- Get the time & date ahd otehr data for teh serial data
+            const now = new Date;
+            let delay_selection = document.getElementById("delays");
+            let delay_in_ms = delay_selection.value;
+
+            const debugDataStruct = now.getHours()+":"+
+                    now.getMinutes()+":"+
+                    now.getSeconds()+":"+
+                    now.getDay()+":"+
+                    now.getDate()+":"+
+                    now.getMonth()+":"+
+                    now.getFullYear()+":"+
+                    delay_in_ms;
+                    // enableTilt;
+
+
+            // console.log(debugDataStruct);
+            ds = document.getElementById('data_structure');
+            ds.innerHTML = debugDataStruct;
+        }
+
     }, 1000);
 });
 
