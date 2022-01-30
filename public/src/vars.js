@@ -53,6 +53,7 @@ var serialData;
 	Variables defining at what frequency data needs to be writtent to serial port and for how long
 	e.g: write data 10 times at a frequency of 1 sec between writes.  
 */
-let maxWrites = 10;
-let writeFrequency = 1000; // in ms
+let writeFor = 10000; // in ms
+const writeFrequency = 1000; // in ms
+let maxWrites = writeFor/writeFrequency; 
 let currWriteCount = 0;

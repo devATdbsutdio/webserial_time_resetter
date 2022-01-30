@@ -241,9 +241,9 @@ const writeDateAndTimeData = async _ => {
     for (let i = 1; i < maxWrites+1; i++) {
             //UI related info
             currWriteCount = (maxWrites)-i;
-            console.log(currWriteCount + " sec left");
+            console.log(currWriteCount + " writes left");
             // Show the countdown remaining for user to sync time, near the button.
-            whileSyncingPrompt.innerHTML = '[' + currWriteCount + ' sec left] Press button on watch to sync!'
+            whileSyncingPrompt.innerHTML = '[' + currWriteCount + ' writes left] Press button on watch to sync!'
 
             // -- Get the time
             const now = new Date;
@@ -264,7 +264,7 @@ const writeDateAndTimeData = async _ => {
             // -- write the Serial Data
             if (port !=null && port.writable) writeToStream(serialData);
             else console.log("Not writing to Serial Port as it wasn't created/selected!\n"+serialData);
-
+            
             await delay(writeFrequency);
         }
 
