@@ -8,7 +8,7 @@ body {
 
 @font-face {
     font-family: "NeusaNextPro-Light";
-    src: url("/assets/fonts/NeusaNextPro-Light.ttf") format("truetype");
+    src: url("public/assets/fonts/NeusaNextPro-Light.ttf") format("truetype");
 }
 
 
