@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById('notComputer').style.display = 'none';
 
         if (navigator.serial) {
-            console.log('Web Serial API Supported 🤗');
+            console.log('Web Serial API Supported 🤗 ');
 
             // Hide the "Non-chrome" warning Top Banner 
             document.getElementById('notSupported').style.display = 'none';
@@ -38,18 +38,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             webSerialSupported = true;
 
-
-            // -- [TODO] Handle Events for physical re-connection of serial port by users when plug in the same device
-            // navigator.serial.addEventListener("connect", (event) => {
-            //     if(disconnectedByAccident && !wasClickedToDisconnect){ // TODO: retreive var state from session cache
-            //         reconnectSerial(event);
-            //     }
-            // });
-
-
             // -- Handle Events for physical dis-connection of serial port by users by accident
             navigator.serial.addEventListener("disconnect", (event) => {
-                // TBD: fires twice! "Duct Tape" mitigation strategy here! :|
+                // TBD: [find a better method] fires twice! "Duct Tape" mitigation strategy here! :|
                 disconnectCounter += 1;
                 if(disconnectCounter <= 1){
                     console.log('Serial Port was physically removed by by user ❌');
@@ -60,18 +51,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     // ** These vars are used later for serial port interaction
                     serialConnected = false;
 
-                    // TODO: remove port pointer 
+                    // Remove port pointer 
                     port = null;
                     event.port = null;
                     event.target = null;
 
-                    // Stream related objects
-                    // TODO: handle errors of pysical disconnection for output stream annd output done...
+                    // Set stream related objects to null
                     outputStream = null;
                     outputDone = null;
-                    
-                    connectCounter = 0; 
-                    disconnectedByAccident = true; // TODO: save this in session cache
                 }else{
                     disconnectCounter = 0;
                 }
@@ -126,7 +113,6 @@ serialbtn.addEventListener("click", async () => {
                 await port.close();
                 port = null;
                 serialConnected = false;
-                wasClickedToDisconnect = true;
 
                 console.log('[SERIAL BUTTON PRESSED] Disconnecting Serial...');
                 console.log("Serial disconnected ❌");
@@ -136,7 +122,6 @@ serialbtn.addEventListener("click", async () => {
             }   
         }
     }
-    connectCounter = 0;
 });
 
 
@@ -158,8 +143,7 @@ async function connectSerial() {
             outputStream = encoder.writable;
 
             serialConnected = true;
-            wasClickedToDisconnect = false;
-            disconnectedByAccident = false;
+
             console.log("Serial connected 👍🏽");
             // -- Reflect button colors to show serial is connected.  
             serialbtn.style.backgroundColor = '#8abbb3';
@@ -169,52 +153,6 @@ async function connectSerial() {
         console.log(e);
     }
 }
-
-
-
-// -- For Automatically opening port, if it was connected before using "event.target" 
-async function reconnectSerial(e){
-    // TBD: fires twice! "Duct Tape" mitigation strategy here! :|
-    connectCounter += 1;
-    if(connectCounter <= 1){
-        // alert('Device was attached again, please reconnect!');
-
-        // ** Adding delays to avoid race condition and giving time for browser to actually make the port available
-        // await delay(1000);
-        port = await e.port || e.target;
-        // await delay(1000);
-
-        try {
-            // -- Wait for the serial port to re-open.
-            let tryReconnecting = true;
-            while (tryReconnecting){
-                try{
-                    await port.open({ baudRate: baudrate});
-                    if (port) {
-                        tryReconnecting = false;
-                    }
-                } catch(err){
-                    console.log('Error occured while attempting to re-open port:\n-> ', err);
-                }
-            }
-
-            if (port.writable && port.readable){
-                serialConnected = true;
-                wasClickedToDisconnect = false;
-                disconnectedByAccident = false;
-                console.log('Serial Port is available again and Reconnected! 👍🏽');
-                // -- Reflect button colors to show serial is connected.  
-                serialbtn.style.backgroundColor = '#8abbb3';
-                document.getElementById('serialPlug').style.color= '#355953';
-            }  
-        } catch (e) {
-            console.log(e);
-        }
-    }else{
-        connectCounter = 0;
-    }
-}
-
 
 
 
@@ -259,7 +197,6 @@ const writeDateAndTimeData = async _ => {
                                 now.getMonth()+":"+
                                 now.getFullYear()+":"+
                                 delay_in_ms;
-                                // enableTilt;
 
             // -- write the Serial Data
             if (port !=null && port.writable) writeToStream(serialData);
@@ -270,8 +207,6 @@ const writeDateAndTimeData = async _ => {
 
     // unlock the button
     console.log('\nun-lock\n');
-    // TBD: Remove the countdown from near the button.
-    // ...
     whileSyncingPrompt.style.display = "none";
 
     // -- Reflect button colors to show un-locked.  
@@ -284,11 +219,6 @@ const writeDateAndTimeData = async _ => {
 
 
 function writeToStream(...lines) {
-    // -- Setup the output stream here.
-    // const encoder = new TextEncoderStream();
-    // outputDone = encoder.readable.pipeTo(port.writable);
-    // outputStream = encoder.writable;
-
     const writer = outputStream.getWriter();
 
     lines.forEach(line => {
@@ -297,15 +227,3 @@ function writeToStream(...lines) {
     });
     writer.releaseLock();
 }
-
-
-
-
-//------- tilt enable disable stuff for frontend -------//
-// const enableTiltSwSelector = document.getElementById('tilt_sw');
-// let state = false;
-// enableTiltSwSelector.addEventListener("click", () => {
-//     state = !state;
-//     if (state) enableTilt = 1;
-//     else enableTilt = 0;
-// });

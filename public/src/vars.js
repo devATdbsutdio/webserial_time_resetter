@@ -24,14 +24,10 @@ let weekdays = [
 	"SATURDAY"
 ]
 let delay_in_ms = 4;
-// let enableTilt = 0;
 
 //--------- SERIAL PORT RELATED ----------//
 let webSerialSupported = false;
-let wasClickedToDisconnect = false;
-let disconnectedByAccident = false;
 
-let connectCounter = 0;
 let disconnectCounter = 0;
 
 let port;
