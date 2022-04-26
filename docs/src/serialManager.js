@@ -59,6 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     // Set stream related objects to null
                     outputStream = null;
                     outputDone = null;
+                    disconnectCounter = 0;
                 }else{
                     disconnectCounter = 0;
                 }
@@ -119,6 +120,7 @@ serialbtn.addEventListener("click", async () => {
                 // -- Reset button colors. 
                 serialbtn.style.backgroundColor = '#8f8f8f';
                 document.getElementById('serialPlug').style.color= '#242424';
+                disconnectCounter = 0;
             }   
         }
     }
@@ -143,6 +145,7 @@ async function connectSerial() {
             outputStream = encoder.writable;
 
             serialConnected = true;
+            disconnectCounter = 0;
 
             console.log("Serial connected 👍🏽");
             // -- Reflect button colors to show serial is connected.  
