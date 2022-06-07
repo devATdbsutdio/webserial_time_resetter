@@ -188,6 +188,7 @@ const writeDateAndTimeData = async _ => {
 
             // -- Get the time
             const now = new Date;
+            var month_ = now.getMonth()+1; // month starts from 0
 
             let delay_selection = document.getElementById("delays");
             let delay_in_ms = Number(delay_selection.value);
@@ -197,7 +198,7 @@ const writeDateAndTimeData = async _ => {
                                 now.getSeconds()+":"+
                                 now.getDay()+":"+
                                 now.getDate()+":"+
-                                now.getMonth()+":"+
+                                month_+":"+
                                 now.getFullYear()+":"+
                                 delay_in_ms;
 

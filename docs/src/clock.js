@@ -26,8 +26,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // -- for showing Serial data structure on the front end
         if (show_serial_data_on_frontend == true){
-            // -- Get the time & date ahd otehr data for teh serial data
+            // -- Get the time & date ahd other data for the serial data
             const now = new Date;
+            var month_ = now.getMonth()+1; // month starts from 0
+
             let delay_selection = document.getElementById("delays");
             let delay_in_ms = delay_selection.value;
 
@@ -36,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     now.getSeconds()+":"+
                     now.getDay()+":"+
                     now.getDate()+":"+
-                    now.getMonth()+":"+
+                    month_+":"+ // [ TEST ]
                     now.getFullYear()+":"+
                     delay_in_ms;
                     // enableTilt;
