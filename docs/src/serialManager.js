@@ -3,6 +3,15 @@ const syncbtn = document.querySelector('.sync');
 const spinicon =  document.querySelector('.fa-sync');
 var whileSyncingPrompt = document.getElementById('syncingPrompt');
 
+// const filters = [
+//   {
+//     vendorId: 0x1a86, // CH334
+//     productId: 0x7523 // CH334
+//   },
+// ];
+
+
+
 //-- [Await based delay function] Returns a Promise that resolves after "ms"
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -131,8 +140,20 @@ serialbtn.addEventListener("click", async () => {
 async function connectSerial() {
     // ... TBD "Filters" options in requestPort();
     // ... TBD as waiting for better filters like device string identifiers etc. and not just VID and PID
+    const serial_devices = [
+        { 
+            usbVendorId:  0x1a86, // CH334
+            usbProductId: 0x7523 
+        }, 
+        { 
+            usbVendorId:  0x10C4, // CP210X
+            usbProductId: 0xEA60 
+        }, 
+    ];
 
-    port = await navigator.serial.requestPort();
+
+    // port = await navigator.serial.requestPort();
+    port = await navigator.serial.requestPort({ filters: serial_devices}); // with filters
 
     try {
         // -- Wait for the serial port to open.
